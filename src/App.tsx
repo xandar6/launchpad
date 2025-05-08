@@ -12,18 +12,20 @@ import Footer from "./components/Footer/Footer";
 
 function App() {
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <Hero />
-      <Intro />
-      <About />
-      <Projects />
-      <Process />
-      <Offices />
-      <Contact />
-      <LatestNews />
+      <main className="flex-grow flex flex-col">
+        <Hero />
+        <Intro />
+        <About />
+        <Projects />
+        <Process />
+        <Offices />
+        <Contact />
+        <LatestNews />
+      </main>
       <Footer />
-    </>
+    </div>
   );
 }
 

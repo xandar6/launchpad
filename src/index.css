@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -39,6 +40,16 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* custom styles */
+  --color-launchpad-navy: var(--launchpad-navy);
+  --color-launchpad-blue: var(--launchpad-blue);
+  --color-launchpad-white: var(--launchpad-white);
+  --color-launchpad-gray: var(--launchpad-gray);
+  --color-launchpad-purple: var(--launchpad-purple);
+
+  --color-launchpad-blue-hover: var(--launchpad-blue-hover);
+  --color-launchpad-navy-overlay: var(--launchpad-navy-overlay);
 }
 
 :root {
@@ -77,7 +88,8 @@
 
   /* custom styles */
 
-  --launchpad-navy: #0d1b2a;
+  /* --launchpad-navy: #0d1b2a; */
+  --launchpad-navy: hsl(208, 25%, 10%);
   --launchpad-blue: #00b4d8;
   --launchpad-white: #f8f9fa;
   --launchpad-gray: #6c757d;
@@ -85,6 +97,7 @@
 
   --launchpad-blue-hover: #0097b7;
   --launchpad-navy-overlay: rgba(13, 27, 42, 0.7);
+  --launchpad-primary-font: "Inter", sans-serif;
 }
 
 .dark {
@@ -136,7 +149,11 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-background text-foreground;
+    font-family: "Inter", theme("fontFamily.sans");
   }
 }

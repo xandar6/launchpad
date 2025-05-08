@@ -1,0 +1,18 @@
+/* src/components/Hero/Hero.module.css */
+.heroSectionMasked {
+  -webkit-mask-image: url("/src/assets/images/mask.svg");
+  mask-image: url("/src/assets/images/mask.svg");
+  -webkit-mask-position: bottom center;
+  mask-position: bottom center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  /* Tailwind's 'bg-launchpad-navy' will provide the background color */
+  /* No default mask-size here, relying on the media query or browser default */
+}
+
+@media (min-width: 1920px) {
+  .heroSectionMasked {
+    -webkit-mask-size: cover; /* Cover for very large screens */
+    mask-size: cover;
+  }
+}
