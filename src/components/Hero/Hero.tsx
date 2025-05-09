@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { BackgroundBeams } from "@/components/ui/background-beams";
+import { Boxes } from "@/components/ui/background-boxes";
 import styles from "./Hero.module.css";
 
 export default function HeroSectionSimpleCentred() {
@@ -80,7 +80,7 @@ export default function HeroSectionSimpleCentred() {
             </a>
           </div> */}
         </div>
-        <BackgroundBeams />
+        <Boxes />
       </section>
       {/* End Hero */}
     </>
