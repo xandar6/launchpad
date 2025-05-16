@@ -1,51 +1,95 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
-import introBg from "@/assets/images/1.png"; // Import the image
-import { motion } from "framer-motion"; // Import motion
-import MouseIcon from "@/components/ui/MouseIcon"; // Import the new MouseIcon component
+import { motion } from "framer-motion"; // For entry animations
+import MouseIcon from "@/components/ui/MouseIcon";
+import { DollarSign, Zap, Rocket, Settings, Code } from "lucide-react";
+// Removed HoverBorderGradient import
+
+const valueCardsData = [
+  { icon: DollarSign, label: "Budget-Friendly" },
+  { icon: Zap, label: "Clean & Fast" },
+  { icon: Rocket, label: "Modern & Scalable" },
+  { icon: Settings, label: "Tailored to Your Needs" },
+  { icon: Code, label: "Built with React & Tailwind" },
+];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.3,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 12,
+    },
+  },
+};
 
 const Intro: React.FC = () => {
   return (
     <section
       style={{
-        backgroundImage: `url(${introBg})`, // Applied via inline style
+        backgroundImage: `url("/src/assets/images/intro/intro_bg_1.webp")`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
-      className="-mt-[56px] flex-grow flex flex-col justify-center pb-16 sm:pb-24 pt-[119px] sm:pt-[151px] text-center text-white relative z-0">
+      className="-mt-[56px] flex-grow flex flex-col justify-center pb-16 sm:pb-24 pt-[119px] sm:pt-[151px] text-white relative z-0">
+      {/* MouseIcon remains unchanged as per current scope */}
       <motion.div
-        className="absolute left-1/2 -translate-x-1/2 top-5 sm:top-5 z-20" // Adjusted top, increased z-index
+        className="absolute left-1/2 -translate-x-1/2 top-5 sm:top-5 z-20"
         style={{
-          width: "24px", // Corresponds to ~40% of original 60px height for SVG
-          height: "36px", // Corresponds to ~40% of original 60px height for SVG
-          color: "white", // This will be inherited by MouseIcon's currentColor
+          width: "24px",
+          height: "36px",
+          color: "var(--launchpad-navy)",
         }}
-        animate={{
-          y: ["0px", "3px", "0px"], // Subtle up and down movement
-        }}
-        transition={{
-          duration: 2, // Duration of one cycle
-          repeat: Infinity, // Repeat indefinitely
-          ease: "easeInOut", // Smooth easing
-        }}>
+        animate={{ y: ["0px", "3px", "0px"] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}>
         <MouseIcon className="w-full h-full" />
       </motion.div>
+
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-          We are the one of the most effective Web Design Companies
-        </h2>
-        <p className="text-lg sm:text-xl mb-8 max-w-3xl mx-auto">
-          Getting online is easy. Succeeding online is a different story. You’ll
-          need more than just a beautiful website to stand out these days.
-          Online marketing solutions. Conversion-based web design coupled with a
-          lead generating marketing plan, your online success is inevitable.
-        </p>
-        <Button
-          size="lg"
-          className="bg-launchpad-blue hover:bg-launchpad-blue-hover text-white">
-          Get Started
-        </Button>
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 justify-items-center gap-8 py-12" // Increased gap, adjusted grid for more items
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible">
+          {valueCardsData.map((cardItem, index) => {
+            const IconComponent = cardItem.icon;
+            return (
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                className="w-full max-w-[200px] min-h-[220px] flex flex-col cursor-pointer">
+                {/* Sizing is maintained on this outer motion.div */}
+                <div className="w-full h-full rounded-xl bg-[var(--launchpad-navy-overlay)] p-4 flex flex-col justify-center items-center border border-[var(--launchpad-navy-overlay)]">
+                  {/* Removed corner border elements. Added standard border. Removed relative and overflow-hidden as they are not strictly needed for this simple border. */}
+                  {/* Card Content */}
+                  <IconComponent className="w-10 h-10 mb-3 text-launchpad-blue" />{" "}
+                  {/* Removed z-20 */}
+                  <h3 className="text-base text-center font-normal text-launchpad-white">
+                    {" "}
+                    {/* Removed z-20 */}
+                    {cardItem.label}
+                  </h3>
+                </div>
+              </motion.div>
+            );
+          })}
+        </motion.div>
       </div>
     </section>
   );

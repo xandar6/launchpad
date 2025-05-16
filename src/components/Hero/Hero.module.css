@@ -1,5 +1,9 @@
 /* src/components/Hero/Hero.module.css */
 .heroSectionMasked {
+  background-image: url("/src/assets/images/hero_bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   -webkit-mask-image: url("/src/assets/images/mask.svg");
   mask-image: url("/src/assets/images/mask.svg");
   -webkit-mask-position: bottom center;
@@ -15,4 +19,70 @@
     -webkit-mask-size: cover; /* Cover for very large screens */
     mask-size: cover;
   }
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--launchpad-navy-overlay);
+  z-index: 2; /* Ensures overlay is above background but below content */
+}
+
+.heroTitlePoppins {
+  font-family: var(--launchpad-poppins-font);
+  font-weight: 600; /* Semi-bold */
+  letter-spacing: 0.025em; /* Slight increase in letter spacing */
+}
+
+.heroDescriptionPoppins {
+  font-family: var(--launchpad-poppins-font);
+}
+
+.gradientButtonWrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px; /* p-0.5 */
+  margin-bottom: 0.5rem; /* mb-2 */
+  margin-right: 0.5rem; /* me-2 */
+  overflow: hidden;
+  font-size: 1rem; /* text-base, increased from text-sm */
+  font-weight: 500; /* font-medium */
+  color: var(
+    --launchpad-white
+  ); /* Default text color for wrapper, assuming dark context */
+  border-radius: 0.5rem; /* rounded-lg */
+  background-image: linear-gradient(
+    to bottom right,
+    var(--launchpad-purple),
+    var(--launchpad-blue)
+  );
+  outline: none;
+  cursor: pointer;
+}
+
+.gradientButtonWrapper:focus-visible {
+  box-shadow: 0 0 0 4px rgba(0, 180, 216, 0.5); /* launchpad-blue with alpha for focus ring */
+}
+
+.gradientButtonContent {
+  position: relative;
+  padding: 0.875rem 1.75rem; /* Increased padding */
+  transition: background-color 0.075s ease-in, color 0.075s ease-in; /* duration-75 */
+  background-color: var(
+    --launchpad-navy
+  ); /* Corresponds to dark:bg-gray-900, as hero is dark */
+  color: var(--launchpad-white); /* Text on dark bg */
+  border-radius: calc(
+    0.5rem - 2px
+  ); /* inner radius, slightly less than wrapper */
+}
+
+.gradientButtonWrapper:hover .gradientButtonContent {
+  background-color: transparent;
+  color: var(--launchpad-white); /* Text color on hover (gradient background) */
 }

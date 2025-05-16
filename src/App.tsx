@@ -5,24 +5,26 @@ import Intro from "./components/Intro/Intro";
 import About from "./components/About/About";
 import Projects from "./components/Projects/Projects";
 import Process from "./components/Process/Process";
-import Offices from "./components/Offices/Offices";
 import Contact from "./components/Contact/Contact";
-import LatestNews from "./components/LatestNews/LatestNews";
 import Footer from "./components/Footer/Footer";
 
 function App() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col overflow-x-hidden">
       <Header />
       <main className="flex-grow flex flex-col">
         <Hero />
         <Intro />
-        <About />
-        <Projects />
+        <section id="About">
+          <About />
+        </section>
+        <section id="Project">
+          <Projects />
+        </section>
         <Process />
-        <Offices />
-        <Contact />
-        <LatestNews />
+        <section id="Contact">
+          <Contact />
+        </section>
       </main>
       <Footer />
     </div>

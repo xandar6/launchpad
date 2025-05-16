@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -89,15 +90,16 @@
   /* custom styles */
 
   /* --launchpad-navy: #0d1b2a; */
-  --launchpad-navy: hsl(208, 25%, 10%);
+  --launchpad-navy: #0e1f2f;
   --launchpad-blue: #00b4d8;
   --launchpad-white: #f8f9fa;
   --launchpad-gray: #6c757d;
   --launchpad-purple: #7b2cbf;
 
   --launchpad-blue-hover: #0097b7;
-  --launchpad-navy-overlay: rgba(13, 27, 42, 0.7);
+  --launchpad-navy-overlay: rgba(14, 31, 47, 0.85);
   --launchpad-primary-font: "Inter", sans-serif;
+  --launchpad-poppins-font: "Poppins", sans-serif;
 }
 
 .dark {
@@ -135,14 +137,15 @@
 
   /* custom styles */
 
-  --launchpad-navy: #0d1b2a;
+  /* --launchpad-navy: #0d1b2a; */
+  --launchpad-navy: #0e1f2f;
   --launchpad-blue: #00b4d8;
   --launchpad-white: #f8f9fa;
   --launchpad-gray: #6c757d;
   --launchpad-purple: #7b2cbf;
 
   --launchpad-blue-hover: #0097b7;
-  --launchpad-navy-overlay: rgba(13, 27, 42, 0.7);
+  --launchpad-navy-overlay: rgba(14, 31, 47, 0.85);
 }
 
 @layer base {
@@ -154,6 +157,6 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: "Inter", theme("fontFamily.sans");
+    font-family: "Poppins", theme("fontFamily.sans");
   }
 }
