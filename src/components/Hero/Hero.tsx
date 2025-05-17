@@ -69,13 +69,14 @@ export default function HeroSectionSimpleCentred() {
           </div>
           {/* Buttons */}
           <div className="mt-10 flex justify-center gap-3">
-            <motion.button
+            <motion.a
+              href="#process"
               className={styles.gradientButtonWrapper}
               initial="hidden"
               animate="visible"
               variants={buttonAppearFromBottomVariants(0.6)}>
               <span className={styles.gradientButtonContent}>Get Started</span>
-            </motion.button>
+            </motion.a>
           </div>
           {/* End Buttons */}
         </div>

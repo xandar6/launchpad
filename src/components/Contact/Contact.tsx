@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import chatIcon from "@/assets/images/contact/chat.svg"; // Added chat icon import
+import emailIcon from "@/assets/images/contact/email.svg";
+import whatsappIcon from "@/assets/images/contact/whatsapp.svg";
 
 import { Button } from "@/components/ui/button"; // Re-added Button import
 import { Input } from "@/components/ui/input";
@@ -76,9 +79,19 @@ const Contact: React.FC = () => {
           <div className="text-center lg:text-left mb-12 lg:mb-0">
             {" "}
             {/* Reverted lg:text-center to lg:text-left */}{" "}
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-20 text-center font-[var(--launchpad-poppins-font)]">
-              Let’s Talk About Your Project
-            </h2>
+            <div className="flex flex-col items-center lg:items-start mb-20">
+              <div className="flex items-center justify-center lg:justify-start">
+                <img
+                  src={chatIcon}
+                  alt="Chat icon"
+                  className="h-10 w-10 sm:h-12 sm:w-12 mr-3 sm:mr-4"
+                />{" "}
+                {/* Adjusted size and margin */}
+                <h2 className="text-4xl font-semibold text-white font-[var(--launchpad-poppins-font)]">
+                  Let’s Talk About Your Project
+                </h2>
+              </div>
+            </div>
             <p className="text-base sm:text-lg text-gray-300 mb-8 sm:mb-10 max-w-lg mx-auto lg:mx-0 font-[var(--launchpad-poppins-font)]">
               Not sure where to start? Just tell us what you’re looking for —
               we’ll help you figure out the rest.
@@ -88,15 +101,41 @@ const Contact: React.FC = () => {
               <p className="text-xl font-semibold mb-3 font-[var(--launchpad-poppins-font)]">
                 Or reach us directly:
               </p>
-              <p className="text-base sm:text-lg font-[var(--launchpad-poppins-font)]">
-                Email:{" "}
+              {/* New Button Structure */}
+              <div className="mt-6 space-y-4 md:space-y-0 md:flex md:space-x-4">
+                {/* Email Button */}
                 <a
                   href="mailto:hello@launchpadwebsolutions.com"
-                  className="text-[--launchpad-blue] hover:underline hover:text-[--launchpad-blue-hover] transition-colors duration-200">
-                  hello@launchpadwebsolutions.com
+                  className="block w-full md:w-auto">
+                  <Button
+                    variant="outline"
+                    className="w-full flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-white/10 cursor-pointer">
+                    <img
+                      src={emailIcon}
+                      alt="Email Icon"
+                      className="w-5 h-5 mr-2"
+                    />
+                    Email Us
+                  </Button>
                 </a>
-              </p>
-              {/* 
+
+                {/* WhatsApp Button */}
+                <a
+                  href="https://wa.me/61408202237?text=Hi%2C+I'm+interested+in+a+website"
+                  className="block w-full md:w-auto">
+                  <Button
+                    variant="outline"
+                    className="w-full flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-white/10 cursor-pointer">
+                    <img
+                      src={whatsappIcon}
+                      alt="WhatsApp Icon"
+                      className="w-5 h-5 mr-2"
+                    />
+                    Chat on WhatsApp
+                  </Button>
+                </a>
+              </div>
+              {/*
                 <p className="mt-2 text-base sm:text-lg">Phone: <a href="tel:+1234567890" className="text-[--launchpad-blue] hover:underline hover:text-[--launchpad-blue-hover] transition-colors duration-200">+1 (234) 567-890</a></p>
                 <div className="mt-4 flex justify-center lg:justify-start space-x-4">
                   <a href="#" className="text-gray-400 hover:text-[--launchpad-blue] transition-colors duration-200"> LinkedIn Icon </a>
@@ -287,7 +326,8 @@ const Contact: React.FC = () => {
 
                   <Button
                     type="submit"
-                    className="w-full bg-[var(--launchpad-white)] text-[var(--launchpad-navy)] hover:bg-neutral-200 font-semibold py-3 text-lg transition-colors duration-200"
+                    variant="outline"
+                    className="w-full bg-white/10 text-white font-medium py-3 text-lg transition-colors duration-200 cursor-pointer"
                     disabled={form.formState.isSubmitting}>
                     {form.formState.isSubmitting
                       ? "Sending..."

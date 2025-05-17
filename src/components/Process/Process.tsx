@@ -1,7 +1,9 @@
 import React from "react";
+import { motion } from "framer-motion"; // Added motion import
 import { Search, NotebookPen, MonitorSmartphone, Rocket } from "lucide-react";
 import processBg from "../../assets/images/process/process_bg.jpg";
 import { cn } from "@/lib/utils"; // Assuming you have a cn utility for classnames
+import styles from "../Hero/Hero.module.css"; // Added import for Hero styles
 
 const processSteps = [
   {
@@ -34,6 +36,16 @@ const processSteps = [
   },
 ];
 
+// Copied from Hero.tsx for consistent button animation
+const buttonAppearFromBottomVariants = (delay = 0) => ({
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut", delay },
+  },
+});
+
 const Process: React.FC = () => {
   return (
     <section
@@ -47,7 +59,7 @@ const Process: React.FC = () => {
       <div className="max-w-screen-lg mx-auto">
         {" "}
         {/* Widened container */}
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-20 text-[var(--launchpad-navy)] font-[var(--launchpad-poppins-font)]">
+        <h2 className="text-4xl font-semibold text-center mb-20 text-[var(--launchpad-navy)] font-[var(--launchpad-poppins-font)]">
           How Does It Work?
         </h2>
         <div className="relative">
@@ -64,8 +76,8 @@ const Process: React.FC = () => {
                 // Base relative positioning, padding for mobile
                 className="relative pb-12 last:pb-0 pl-10 md:pl-0">
                 {/* Timeline Icon - Centered on desktop */}
-                <div className="absolute top-0 h-10 w-10 md:h-12 md:w-12 flex items-center justify-center rounded-full bg-background border-2 border-[var(--launchpad-blue)] left-3 -translate-x-[calc(50%-1px)] md:left-1/2 md:-translate-x-1/2">
-                  <Icon className="h-5 w-5 md:h-6 md:w-6 text-[var(--launchpad-blue)]" />
+                <div className="absolute top-0 h-10 w-10 md:h-12 md:w-12 flex items-center justify-center rounded-full bg-[var(--launchpad-navy)] border-2 border-[var(--launchpad-blue)] left-3 -translate-x-[calc(50%-1px)] md:left-1/2 md:-translate-x-1/2">
+                  <Icon className="h-5 w-5 md:h-6 md:w-6 text-[var(--launchpad-white)]" />
                 </div>
 
                 {/* Content - Alternating position and alignment */}
@@ -83,13 +95,26 @@ const Process: React.FC = () => {
                   <p className="text-md sm:text-lg font-medium text-primary font-[var(--launchpad-poppins-font)]">
                     {label}
                   </p>
-                  <p className="text-sm sm:text-base text-muted-foreground font-[var(--launchpad-poppins-font)]">
+                  <p className="text-sm sm:text-base text-launchpad-navy/50 font-[var(--launchpad-poppins-font)]">
                     {text}
                   </p>
                 </div>
               </div>
             )
           )}
+        </div>
+        {/* Centered Button */}
+        <div className="mt-16 flex justify-center">
+          <motion.a
+            href="#contact"
+            className={styles.gradientButtonWrapper}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+            variants={buttonAppearFromBottomVariants(0.2)} // Small delay after steps
+          >
+            <span className={styles.gradientButtonContent}>Get in Touch</span>
+          </motion.a>
         </div>
       </div>
     </section>

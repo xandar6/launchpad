@@ -294,7 +294,7 @@ export const NavbarLogo = () => {
         width={40}
         height={40}
       />
-      <span className="font-medium text-launchpad-white dark:text-white">
+      <span className="font-[var(--launchpad-michroma-font)] text-launchpad-white dark:text-white">
         Launchpad
       </span>
     </a>

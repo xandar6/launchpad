@@ -1,8 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card"; // Removed CardHeader and CardContent as we'll simplify
 import { ArrowRight } from "lucide-react";
+import styles from "../Hero/Hero.module.css"; // Added import for Hero styles
 
 // Import SVGs
 import landingPageSvg from "@/assets/images/about/landing_page.svg";
@@ -113,9 +113,9 @@ const About: React.FC = () => {
       variants={containerVariants} // Use container variants for overall stagger
     >
       <div className="container mx-auto px-6 md:px-12">
-        <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
+        <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
           {" "}
-          {/* Changed items-center to items-start for better alignment with animations */}
+          {/* Changed items-start to items-center to vertically center columns */}
           {/* Left Column - Text Block */}
           <motion.div
             className="flex flex-col justify-center"
@@ -123,7 +123,7 @@ const About: React.FC = () => {
           >
             <motion.h2
               variants={textItemVariants}
-              className="text-4xl md:text-5xl font-bold text-[var(--color-launchpad-navy)] mb-20 font-[var(--launchpad-poppins-font)]">
+              className="text-4xl font-semibold text-[var(--color-launchpad-navy)] mb-10 font-[var(--launchpad-poppins-font)]">
               Who We Are
             </motion.h2>
             <motion.p
@@ -141,18 +141,17 @@ const About: React.FC = () => {
               budget-conscious solutions that grow with you.
             </motion.p>
             <motion.div variants={textItemVariants}>
-              {" "}
-              {/* Wrap Button in motion.div for individual animation */}
-              <Button
-                variant="outline"
-                size="lg"
-                className="group w-fit bg-[var(--color-launchpad-blue)] text-[var(--color-launchpad-white)] hover:bg-[var(--color-launchpad-blue-hover)] border-[var(--color-launchpad-blue)] hover:border-[var(--color-launchpad-blue-hover)] transition-colors duration-300"
+              <button
+                className={styles.gradientButtonWrapper}
                 onClick={() => {
                   console.log("Navigate to /about page");
                 }}>
-                Learn More
-                <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300" />
-              </Button>
+                <span
+                  className={`${styles.gradientButtonContent} flex items-center`}>
+                  Check Our Services
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </span>
+              </button>
             </motion.div>
           </motion.div>
           {/* Right Column - Feature Cards */}

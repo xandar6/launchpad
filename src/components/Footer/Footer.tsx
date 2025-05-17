@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
 
   return (
     <footer
-      className="bg-cover bg-center text-launchpad-gray py-40 relative border-t border-gray-600"
+      className="bg-cover bg-center text-gray-300 py-40 relative border-t border-gray-600"
       style={{ backgroundImage: `url(${contactBg})` }}>
       <div className="absolute inset-0 bg-[var(--launchpad-navy-overlay)] z-0"></div>
       {/* Added py-40 */}
@@ -105,7 +105,7 @@ const Footer: React.FC = () => {
                   aria-label={social.name}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-launchpad-gray hover:text-launchpad-blue transition-colors duration-200">
+                  className="text-gray-300 hover:text-launchpad-blue transition-colors duration-200">
                   <social.icon className="h-5 w-5" />
                 </a>
               ))}

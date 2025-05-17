@@ -8,9 +8,7 @@ const Projects: React.FC = () => {
       className="py-40 px-4 md:px-8 lg:px-16 bg-[var(--launchpad-navy)] text-white">
       <div className="container mx-auto">
         {/* Adjusted margin-bottom for heading to complement section padding */}
-        <h2 className="text-4xl md:text-5xl font-bold mb-20 text-center">
-          Our Work
-        </h2>
+        <h2 className="text-4xl font-semibold mb-20 text-center">Our Work</h2>
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-start">
           <BackgroundOverlayCard
             imageUrl="/src/assets/images/projects/nwt.jpg"
