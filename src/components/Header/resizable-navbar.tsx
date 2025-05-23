@@ -280,7 +280,7 @@ export const MobileNavMenu = ({
   className,
   isOpen,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onClose,
+  onClose: _onClose, // Destructure 'onClose' prop and rename to '_onClose'
 }: MobileNavMenuProps) => {
   return (
     <AnimatePresence>
@@ -358,7 +358,7 @@ export const NavbarLogo = ({
     <Link
       to="/" // Navigate to home
       onClick={onLogoClick} // Call the passed handler
-      className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-xl font-normal">
+      className="relative z-20 flex items-center px-2 py-1 mr-4 space-x-2 text-xl font-normal">
       <img
         src="/src/assets/images/rocket.svg"
         alt="logo"

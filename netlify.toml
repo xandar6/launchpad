@@ -1,0 +1,45 @@
+# Netlify configuration file
+# Documentation: https://docs.netlify.com/configure-builds/file-based-configuration/
+
+[build]
+  # Directory to publish (relative to root of your repo)
+  publish = "dist"
+  
+  # Default build command
+  command = "npm run build"
+
+# Redirects and rewrites
+[[redirects]]
+  # SPA fallback
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers to set on files
+[[headers]]
+  # Define which paths this specific [[headers]] block will cover
+  for = "/*"
+    [headers.values]
+    # Cache control for static assets
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.html"
+    [headers.values]
+    # No caching for HTML files
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Environment variables
+[build.environment]
+  # Set production environment
+  NODE_ENV = "production"
+
+# Plugin configuration
+[[plugins]]
+  # Optimize images during build
+  package = "netlify-plugin-submit-sitemap"
+
+  [plugins.inputs]
+    # Path to the sitemap URL
+    baseUrl = "https://launchpadwebsolutions.com"
+    sitemapPath = "/sitemap.xml"
