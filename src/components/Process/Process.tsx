@@ -1,5 +1,6 @@
 import React from "react";
-import { motion } from "framer-motion"; // Added motion import
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom"; // Import Link
 import { Search, NotebookPen, MonitorSmartphone, Rocket } from "lucide-react";
 import processBg from "../../assets/images/process/process_bg.jpg";
 import { cn } from "@/lib/utils"; // Assuming you have a cn utility for classnames
@@ -46,35 +47,81 @@ const buttonAppearFromBottomVariants = (delay = 0) => ({
   },
 });
 
+// Animation Variants
+const titleVariants = {
+  hidden: { opacity: 0, y: -30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const timelineLineVariants = {
+  hidden: { scaleY: 0, originY: 0 }, // Animate from the top
+  visible: {
+    scaleY: 1,
+    transition: { duration: 1, ease: "circOut", delay: 0.2 }, // Delay slightly
+  },
+};
+
+const stepsContainerMotionVariants = {
+  hidden: {}, // Container itself doesn't need visual animation if children handle it
+  visible: {
+    transition: {
+      staggerChildren: 0.4, // Time between each step's animation
+      delayChildren: 0.4, // Delay after title/line might start animating
+    },
+  },
+};
+
+const stepItemMotionVariants = {
+  hidden: { opacity: 0, y: 20 }, // Each step slides up and fades in
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 70, damping: 13 },
+  },
+};
+
 const Process: React.FC = () => {
   return (
     <section
       id="process"
-      className="py-40 px-6" // Changed padding to py-40
+      className="py-20 md:py-40 px-6" // Changed padding for mobile
       style={{
         backgroundImage: `url(${processBg})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}>
       <div className="max-w-screen-lg mx-auto">
-        {" "}
-        {/* Widened container */}
-        <h2 className="text-4xl font-semibold text-center mb-20 text-[var(--launchpad-navy)] font-[var(--launchpad-poppins-font)]">
+        <motion.h2
+          className="text-4xl font-semibold text-center mb-20 text-[var(--launchpad-navy)] font-overpass"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={titleVariants}>
           How Does It Work?
-        </h2>
-        <div className="relative">
+        </motion.h2>
+        <motion.div
+          className="relative"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }} // Trigger early for orchestration
+          variants={stepsContainerMotionVariants} // This will orchestrate children
+        >
           {/* Timeline line - Centered on desktop */}
-          <div className="absolute top-0 bottom-0 w-0.5 bg-[var(--launchpad-blue)] left-3 md:left-1/2 md:-translate-x-1/2" />
+          <motion.div
+            className="absolute top-0 bottom-0 w-0.5 bg-[var(--launchpad-blue)] left-3 md:left-1/2 md:-translate-x-1/2"
+            variants={timelineLineVariants}
+          />
 
           {processSteps.map(
             (
               { icon: Icon, title, label, text },
               index // Removed stepNumber
             ) => (
-              <div
+              <motion.div
                 key={index}
-                // Base relative positioning, padding for mobile
-                className="relative pb-12 last:pb-0 pl-10 md:pl-0">
+                className="relative pb-12 last:pb-0 pl-10 md:pl-0"
+                variants={stepItemMotionVariants} // Each step item uses these variants
+              >
                 {/* Timeline Icon - Centered on desktop */}
                 <div className="absolute top-0 h-10 w-10 md:h-12 md:w-12 flex items-center justify-center rounded-full bg-[var(--launchpad-navy)] border-2 border-[var(--launchpad-blue)] left-3 -translate-x-[calc(50%-1px)] md:left-1/2 md:-translate-x-1/2">
                   <Icon className="h-5 w-5 md:h-6 md:w-6 text-[var(--launchpad-white)]" />
@@ -99,22 +146,26 @@ const Process: React.FC = () => {
                     {text}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             )
           )}
-        </div>
+        </motion.div>
         {/* Centered Button */}
         <div className="mt-16 flex justify-center">
-          <motion.a
-            href="#contact"
-            className={styles.gradientButtonWrapper}
+          <motion.div // Using motion.div for variants, Link for navigation
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.5 }}
             variants={buttonAppearFromBottomVariants(0.2)} // Small delay after steps
           >
-            <span className={styles.gradientButtonContent}>Get in Touch</span>
-          </motion.a>
+            <Link
+              to="/#Contact" // Changed to absolute path with hash
+              className={styles.gradientButtonWrapper}>
+              <span className={styles.gradientButtonContent}>
+                Let’s Get Started
+              </span>
+            </Link>
+          </motion.div>
         </div>
       </div>
     </section>

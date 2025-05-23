@@ -1,17 +1,31 @@
 /* src/components/Hero/Hero.module.css */
 .heroSectionMasked {
-  background-image: url("/src/assets/images/hero_bg.png");
+  background-image: url("/src/assets/images/hero/hero_bg.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  -webkit-mask-image: url("/src/assets/images/mask.svg");
-  mask-image: url("/src/assets/images/mask.svg");
-  -webkit-mask-position: bottom center;
-  mask-position: bottom center;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
   /* Tailwind's 'bg-launchpad-navy' will provide the background color */
   /* No default mask-size here, relying on the media query or browser default */
+  /* Mask properties moved to media query */
+}
+
+/* Apply mobile-specific background image */
+@media (max-width: 1023px) {
+  .heroSectionMasked {
+    background-image: url("/src/assets/images/hero/hero_mobile.webp");
+  }
+}
+
+/* Apply mask only on lg screens (1024px) and up */
+@media (min-width: 1024px) {
+  .heroSectionMasked {
+    -webkit-mask-image: url("/src/assets/images/hero/mask.svg");
+    mask-image: url("/src/assets/images/hero/mask.svg");
+    -webkit-mask-position: bottom center;
+    mask-position: bottom center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
 }
 
 @media (min-width: 1920px) {

@@ -5,8 +5,8 @@ import React from "react";
 interface BackgroundOverlayCardProps {
   imageUrl: string;
   hoverImageUrl: string;
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   className?: string;
 }
 

@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom"; // Import Link
 import { Card, CardTitle } from "@/components/ui/card"; // Removed CardHeader and CardContent as we'll simplify
 import { ArrowRight } from "lucide-react";
 import styles from "../Hero/Hero.module.css"; // Added import for Hero styles
@@ -106,7 +107,7 @@ const About: React.FC = () => {
   return (
     <motion.section // Changed to motion.section
       id="about"
-      className="py-40 bg-[var(--color-launchpad-white)] text-[var(--foreground)]" // Changed padding to py-40
+      className="py-20 md:py-40 bg-[var(--color-launchpad-white)] text-[var(--foreground)]" // Changed padding for mobile
       initial="hidden" // Added initial and animate for the whole section
       whileInView="visible" // Animate when section comes into view
       viewport={{ once: true, amount: 0.2 }} // Trigger once, when 20% is visible
@@ -123,35 +124,33 @@ const About: React.FC = () => {
           >
             <motion.h2
               variants={textItemVariants}
-              className="text-4xl font-semibold text-[var(--color-launchpad-navy)] mb-10 font-[var(--launchpad-poppins-font)]">
+              className="text-4xl font-semibold text-[var(--color-launchpad-navy)] mb-10 font-overpass text-center md:text-left">
               Who We Are
             </motion.h2>
             <motion.p
               variants={textItemVariants}
-              className="text-xl font-semibold text-[var(--color-launchpad-navy)] mb-4 font-[var(--launchpad-poppins-font)]">
+              className="text-xl font-semibold text-[var(--color-launchpad-navy)] mb-4 font-[var(--launchpad-poppins-font)] text-center md:text-left">
               Launchpad Web Solutions is a modern development studio focused on
               small and growing businesses.
             </motion.p>
             <motion.p
               variants={textItemVariants}
-              className="text-lg text-[var(--color-launchpad-gray)] mb-8 leading-relaxed font-[var(--launchpad-poppins-font)]">
+              className="text-base md:text-lg text-[var(--color-launchpad-gray)] mb-8 leading-relaxed font-[var(--launchpad-poppins-font)] text-center md:text-left">
               We build clean, scalable websites and web apps using React and
               Tailwind CSS. Whether you're launching your first landing page or
               upgrading to a full dashboard-powered app, we deliver
               budget-conscious solutions that grow with you.
             </motion.p>
-            <motion.div variants={textItemVariants}>
-              <button
-                className={styles.gradientButtonWrapper}
-                onClick={() => {
-                  console.log("Navigate to /about page");
-                }}>
+            <motion.div
+              variants={textItemVariants}
+              className="flex justify-center md:justify-start">
+              <Link to="/services" className={styles.gradientButtonWrapper}>
                 <span
                   className={`${styles.gradientButtonContent} flex items-center`}>
                   Check Our Services
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </span>
-              </button>
+              </Link>
             </motion.div>
           </motion.div>
           {/* Right Column - Feature Cards */}

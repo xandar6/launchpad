@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Michroma&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -52,6 +53,12 @@
 
   --color-launchpad-blue-hover: var(--launchpad-blue-hover);
   --color-launchpad-navy-overlay: var(--launchpad-navy-overlay);
+
+  /* Tailwind v4 Font Family Definitions */
+  --font-sans: "Inter", "sans-serif";
+  --font-poppins: "Poppins", "sans-serif";
+  --font-michroma: "Michroma", "sans-serif";
+  --font-overpass: "Overpass", "sans-serif";
 }
 
 :root {
@@ -90,14 +97,14 @@
 
   /* custom styles */
 
-  /* --launchpad-navy: #0d1b2a; */
-  --launchpad-navy: #0e1f2f;
+  --launchpad-navy: #0d1b2a;
+  /* --launchpad-navy: #0e1f2f; */
   --launchpad-blue: #00b4d8;
   --launchpad-white: #f8f9fa;
   --launchpad-gray: #6c757d;
   --launchpad-purple: #7b2cbf;
 
-  --launchpad-blue-hover: #0097b7;
+  --launchpad-blue-hover: #4964c9;
   --launchpad-navy-overlay: rgba(14, 31, 47, 0.85);
   --launchpad-primary-font: "Inter", sans-serif;
   --launchpad-poppins-font: "Poppins", sans-serif;
@@ -146,8 +153,10 @@
   --launchpad-gray: #6c757d;
   --launchpad-purple: #7b2cbf;
 
-  --launchpad-blue-hover: #0097b7;
+  --launchpad-blue-hover: #4964c9;
   --launchpad-navy-overlay: rgba(14, 31, 47, 0.85);
+
+  --launchpad-michroma-font: var(--launchpad-michroma-font);
 }
 
 @layer base {

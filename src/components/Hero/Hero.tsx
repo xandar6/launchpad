@@ -1,6 +1,7 @@
 import styles from "./Hero.module.css";
 import { GradientText } from "../animate-ui/text/gradient";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom"; // Import Link
 
 const textZoomOutVariants = (delay = 0) => ({
   hidden: { opacity: 0, scale: 1.2 },
@@ -25,7 +26,7 @@ export default function HeroSectionSimpleCentred() {
     <>
       {/* Hero */}
       <section
-        className={`${styles.heroSectionMasked} bg-launchpad-navy min-h-[70vh] relative z-1 flex flex-col justify-center`}>
+        className={`${styles.heroSectionMasked} bg-launchpad-navy min-h-screen md:min-h-[70vh] relative z-1 flex flex-col justify-center`}>
         <div className={styles.heroOverlay}></div>
         <div className="container mx-auto px-4 py-24 md:px-6 lg:py-32 2xl:max-w-[1400px] relative z-10">
           {/* Title */}
@@ -33,7 +34,7 @@ export default function HeroSectionSimpleCentred() {
             <h1
               className={`scroll-m-20 tracking-tight text-white ${styles.heroTitlePoppins} flex flex-col items-center`}>
               <motion.span
-                className="block text-4xl lg:text-6xl mb-1 md:mb-2 text-neutral-300 font-[var(--launchpad-poppins-font)]"
+                className="block text-3xl md:text-4xl lg:text-6xl mb-1 md:mb-2 text-neutral-300 font-[var(--launchpad-poppins-font)]"
                 initial="hidden"
                 animate="visible"
                 variants={textZoomOutVariants(0)}>
@@ -45,7 +46,7 @@ export default function HeroSectionSimpleCentred() {
                 variants={textZoomOutVariants(0.2)}>
                 <GradientText
                   text="Launchpad Web Solutions"
-                  className="text-6xl lg:text-8xl"
+                  className="text-5xl md:text-6xl lg:text-8xl"
                   gradient="linear-gradient(90deg, #7b2cbf 0%, #00b4d8 25%, #7b2cbf 50%, #00b4d8 75%, #7b2cbf 100%)"
                   transition={{
                     duration: 50,
@@ -57,26 +58,30 @@ export default function HeroSectionSimpleCentred() {
             </h1>
           </div>
           {/* End Title */}
-          <div className="mx-auto mt-10 max-w-3xl text-center">
+          <div className="mx-auto mt-12 md:mt-10 max-w-3xl text-center">
             <motion.p
               className={`text-neutral-300 text-xl ${styles.heroDescriptionPoppins}`}
               initial="hidden"
               animate="visible"
               variants={textZoomOutVariants(0.4)}>
-              Whether you're starting from scratch or leveling up, we help you
-              launch fast with clean, modern digital solutions.
+              We help you launch fast with clean, modern digital solutions —
+              from landing pages to web apps.
             </motion.p>
           </div>
           {/* Buttons */}
-          <div className="mt-10 flex justify-center gap-3">
-            <motion.a
-              href="#process"
-              className={styles.gradientButtonWrapper}
+          <div className="mt-12 md:mt-10 flex justify-center gap-3">
+            <motion.div // Using motion.div for variants, Link for navigation
               initial="hidden"
               animate="visible"
               variants={buttonAppearFromBottomVariants(0.6)}>
-              <span className={styles.gradientButtonContent}>Get Started</span>
-            </motion.a>
+              <Link
+                to="/#process" // Changed to absolute path with hash
+                className={styles.gradientButtonWrapper}>
+                <span className={styles.gradientButtonContent}>
+                  Get Started
+                </span>
+              </Link>
+            </motion.div>
           </div>
           {/* End Buttons */}
         </div>

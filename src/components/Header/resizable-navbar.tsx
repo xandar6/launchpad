@@ -1,13 +1,16 @@
 "use client";
 import { cn } from "../../lib/utils"; // Adjusted path
 import { IconMenu2, IconX } from "@tabler/icons-react";
-import { Github, Linkedin, Instagram } from "lucide-react"; // Using lucide-react as in Footer
+// Removed Github, Linkedin, Instagram from here as SocialLinks component will handle them
 import {
   motion,
   AnimatePresence,
   useScroll,
   useMotionValueEvent,
 } from "framer-motion";
+import { RollingText } from "../animate-ui/text/rolling"; // Added import
+import { Link } from "react-router-dom"; // Import Link
+import SocialLinks from "../ui/SocialLinks"; // Import the new component
 
 import React, { useRef, useState } from "react";
 
@@ -30,7 +33,7 @@ interface NavItemsProps {
   className?: string;
   onItemClick?: () => void; // Will be replaced by onLinkClick for more specific handling
   visible?: boolean;
-  activeLink?: string;
+  currentPathname?: string; // Changed from activeLink
   onLinkClick?: (link: string) => void;
 }
 
@@ -43,6 +46,7 @@ interface MobileNavProps {
 interface MobileNavHeaderProps {
   children: React.ReactNode;
   className?: string;
+  visible?: boolean; // Add visible prop
 }
 
 interface MobileNavMenuProps {
@@ -85,11 +89,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   );
 };
 
-const socialLinks = [
-  { name: "LinkedIn", href: "#", icon: Linkedin },
-  { name: "GitHub", href: "#", icon: Github },
-  { name: "Instagram", href: "#", icon: Instagram },
-];
+// Removed the old socialLinks array
 
 export const NavBody = ({ children, className, visible }: NavBodyProps) => {
   return (
@@ -99,8 +99,8 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
         boxShadow: visible
           ? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
           : "none",
-        width: visible ? "40%" : "100%",
-        // y: visible ? 20 : 0, // Removed y animation
+        width: visible ? "1000px" : "100%",
+        y: visible ? 20 : 0,
       }}
       transition={{
         type: "spring",
@@ -112,8 +112,7 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
       }}
       className={cn(
         "relative z-[60] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex dark:bg-transparent",
-        visible &&
-          "bg-gradient-to-r from-[var(--launchpad-navy)] via-[var(--launchpad-blue)] to-[var(--launchpad-navy)]",
+        visible && "bg-launchpad-navy",
         className
       )}>
       {React.Children.map(children, (child) =>
@@ -125,24 +124,14 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
           : child
       )}
       {/* Social Icons */}
-      <div className="flex items-center space-x-3">
-        {socialLinks.map((social) => (
-          <a
-            key={social.name}
-            href={social.href}
-            aria-label={social.name}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(
-              "text-launchpad-white hover:text-launchpad-blue transition-colors duration-200",
-              visible
-                ? "text-launchpad-white"
-                : "text-launchpad-white dark:text-neutral-300" // Match link colors
-            )}>
-            <social.icon className="h-5 w-5" />
-          </a>
-        ))}
-      </div>
+      <SocialLinks
+        iconClassName={cn(
+          "text-launchpad-white hover:text-launchpad-blue", // Base style
+          visible
+            ? "text-launchpad-white" // Scrolled state for icons in header
+            : "text-launchpad-white dark:text-neutral-300" // Default state for icons in header
+        )}
+      />
     </motion.div>
   );
 };
@@ -150,10 +139,9 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
 export const NavItems = ({
   items,
   className,
-  // onItemClick, // Replaced by onLinkClick
   visible,
-  activeLink,
-  onLinkClick,
+  currentPathname, // Changed from activeLink
+  onLinkClick, // This is primarily for anchor links now
 }: NavItemsProps) => {
   const [hovered, setHovered] = useState<number | null>(null);
 
@@ -161,41 +149,69 @@ export const NavItems = ({
     <motion.div
       onMouseLeave={() => setHovered(null)}
       className={cn(
-        "absolute inset-0 hidden flex-1 flex-row items-center justify-center space-x-2 text-sm font-medium text-zinc-600 transition duration-200 hover:text-zinc-800 lg:flex lg:space-x-2",
+        "hidden flex-1 flex-row items-center justify-center space-x-2 text-sm font-medium text-zinc-600 transition duration-200 hover:text-zinc-800 lg:flex lg:space-x-2",
         className
       )}>
-      {items.map((item, idx) => (
-        <a
-          onMouseEnter={() => setHovered(idx)}
-          onClick={() => onLinkClick && onLinkClick(item.link)}
-          className={cn(
-            "relative px-4 py-2 font-[var(--launchpad-poppins-font)]",
-            visible
-              ? "text-launchpad-white"
-              : "text-launchpad-white dark:text-neutral-300"
-          )}
-          key={`link-${idx}`}
-          href={item.link}>
-          {(hovered === idx || activeLink === item.link) && (
-            <motion.div
-              layoutId={
-                activeLink === item.link
-                  ? `active-link-${item.link}`
-                  : "hovered"
-              }
-              className={cn(
-                "absolute inset-0 h-full w-full rounded-full",
-                visible
-                  ? "bg-[var(--launchpad-navy)]/50" // Hover/active style when navbar is scrolled/visible
-                  : "bg-[var(--launchpad-purple)] dark:bg-neutral-800" // Default hover/active style
-              )}
-              initial={false} // Prevent animation on initial load for active item
-              transition={{ type: "spring", stiffness: 500, damping: 30 }} // Smooth transition for hover
-            />
-          )}
-          <span className="relative z-20">{item.name}</span>
-        </a>
-      ))}
+      {items.map((item, idx) => {
+        const commonClassNames = cn(
+          "relative px-4 py-2 font-[var(--launchpad-poppins-font)]",
+          visible
+            ? "text-launchpad-white"
+            : "text-launchpad-white dark:text-neutral-300"
+        );
+
+        const motionDiv = (
+          isActuallyActive: boolean // Renamed param for clarity
+        ) => (
+          <motion.div
+            layoutId={
+              isActuallyActive
+                ? `active-highlight-${item.link}`
+                : `hover-highlight-${item.link}`
+            } // Unique IDs
+            className={cn(
+              "absolute inset-0 h-full w-full rounded-full",
+              "bg-[var(--launchpad-blue-hover)]"
+            )}
+            initial={false}
+            transition={{ type: "spring", stiffness: 350, damping: 35 }}
+          />
+        );
+
+        if (item.link.startsWith("/")) {
+          // Internal link, use React Router's Link
+          // For active state, NavLink would be better, but Link is a start
+          return (
+            <Link
+              to={item.link}
+              key={`link-${idx}`}
+              onMouseEnter={() => setHovered(idx)}
+              onClick={() => {
+                if (onLinkClick) onLinkClick(item.link); // May still want to call this for consistency or if it updates parent state
+                // For router links, active state is often handled by NavLink or useLocation
+              }}
+              className={commonClassNames}>
+              {(hovered === idx || currentPathname === item.link) &&
+                motionDiv(currentPathname === item.link)}
+              <span className="relative z-20">{item.name}</span>
+            </Link>
+          );
+        } else {
+          // External or anchor link, use regular <a>
+          return (
+            <a
+              href={item.link}
+              key={`link-${idx}`}
+              onMouseEnter={() => setHovered(idx)}
+              onClick={() => onLinkClick && onLinkClick(item.link)}
+              className={commonClassNames}>
+              {(hovered === idx || currentPathname === item.link) &&
+                motionDiv(currentPathname === item.link)}
+              <span className="relative z-20">{item.name}</span>
+            </a>
+          );
+        }
+      })}
     </motion.div>
   );
 };
@@ -212,7 +228,7 @@ export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
         paddingRight: visible ? "12px" : "0px",
         paddingLeft: visible ? "12px" : "0px",
         borderRadius: visible ? "4px" : "2rem",
-        // y: visible ? 20 : 0, // Removed y animation
+        y: visible ? 20 : 0,
       }}
       transition={{
         type: "spring",
@@ -224,7 +240,14 @@ export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
         visible && "bg-white/80 dark:bg-neutral-950/80",
         className
       )}>
-      {children}
+      {React.Children.map(children, (child) =>
+        React.isValidElement(child)
+          ? React.cloneElement(
+              child as React.ReactElement<{ visible?: boolean }>,
+              { visible } // Pass visible to children of MobileNav
+            )
+          : child
+      )}
     </motion.div>
   );
 };
@@ -232,6 +255,7 @@ export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
 export const MobileNavHeader = ({
   children,
   className,
+  visible, // Receive visible prop
 }: MobileNavHeaderProps) => {
   return (
     <div
@@ -239,7 +263,14 @@ export const MobileNavHeader = ({
         "flex w-full flex-row items-center justify-between",
         className
       )}>
-      {children}
+      {React.Children.map(children, (child) =>
+        React.isValidElement(child)
+          ? React.cloneElement(
+              child as React.ReactElement<{ visible?: boolean }>,
+              { visible } // Pass visible to children of MobileNavHeader
+            )
+          : child
+      )}
     </div>
   );
 };
@@ -259,7 +290,7 @@ export const MobileNavMenu = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className={cn(
-            "absolute inset-x-0 top-16 z-50 flex w-full flex-col items-start justify-start gap-4 rounded-lg bg-white px-4 py-8 shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] dark:bg-neutral-950",
+            "absolute inset-x-0 top-[4.5rem] z-50 flex w-full flex-col items-start justify-start gap-4 rounded-[4px] bg-white/80 px-4 py-8 shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] dark:bg-neutral-950/80",
             className
           )}>
           {children}
@@ -272,32 +303,76 @@ export const MobileNavMenu = ({
 export const MobileNavToggle = ({
   isOpen,
   onClick,
+  visible, // Add visible prop
 }: {
   isOpen: boolean;
   onClick: () => void;
+  visible?: boolean; // Make visible optional as it might not always be passed from all usages
 }) => {
+  const iconColor = visible
+    ? "text-launchpad-navy" // Scrolled state
+    : "text-launchpad-white"; // Default state
+
   return isOpen ? (
-    <IconX className="text-black dark:text-white" onClick={onClick} />
+    <IconX className={cn(iconColor, "dark:text-white")} onClick={onClick} />
   ) : (
-    <IconMenu2 className="text-black dark:text-white" onClick={onClick} />
+    <IconMenu2 className={cn(iconColor, "dark:text-white")} onClick={onClick} />
   );
 };
 
-export const NavbarLogo = () => {
+export const NavbarLogo = ({
+  visible,
+  isMobile,
+  onLogoClick, // Add onLogoClick prop
+}: {
+  visible?: boolean;
+  isMobile?: boolean;
+  onLogoClick?: () => void; // Define prop type
+}) => {
+  const defaultColor = "text-launchpad-white";
+  let logoTextColor = defaultColor;
+
+  if (isMobile) {
+    logoTextColor = visible ? "text-launchpad-navy" : defaultColor;
+  } else {
+    // For desktop, color is always white, unless 'visible' makes it navy (original logic for desktop)
+    // However, user feedback was to keep desktop always white on top, and navy when scrolled.
+    // The NavBody component itself handles the background change, and NavItems handles its text color.
+    // NavbarLogo on desktop should remain white unless the NavBody's background makes it hard to see.
+    // For now, let's stick to the user's explicit request: mobile changes, desktop doesn't change based on this specific logic.
+    // The desktop version's text color is primarily handled by its parent's (NavBody) styling context.
+    // The `visible` prop on NavBody changes its background to a gradient where white text is fine.
+    // So, for desktop, we can keep it white.
+    logoTextColor = defaultColor; // Default to white for desktop, scroll changes are handled by NavBody's theme
+    // If NavBody's `visible` state implies a background where white is not good, this might need adjustment.
+    // For now, assuming white is fine on desktop scrolled state due to NavBody's gradient.
+    // If the desktop logo *also* needs to turn navy when scrolled, this logic needs to be:
+    // logoTextColor = visible ? "text-launchpad-navy" : defaultColor; (for both mobile and desktop)
+    // But user specified *only* mobile.
+  }
+
+  // If we want desktop to also change color when scrolled (visible = true)
+  // const logoTextColor = visible ? "text-launchpad-navy" : "text-launchpad-white";
+
   return (
-    <a
-      href="#"
-      className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-xl font-normal text-black">
+    <Link
+      to="/" // Navigate to home
+      onClick={onLogoClick} // Call the passed handler
+      className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-xl font-normal">
       <img
         src="/src/assets/images/rocket.svg"
         alt="logo"
         width={40}
         height={40}
       />
-      <span className="font-[var(--launchpad-michroma-font)] text-launchpad-white dark:text-white">
-        Launchpad
-      </span>
-    </a>
+      <RollingText
+        text="LAUNCHPAD"
+        className={cn(
+          "font-overpass uppercase tracking-wider dark:text-white",
+          logoTextColor
+        )}
+      />
+    </Link>
   );
 };
 

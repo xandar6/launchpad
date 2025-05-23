@@ -1,6 +1,32 @@
 import React from "react";
-import { Github, Linkedin, Instagram, Mail, MapPin } from "lucide-react";
+import { motion } from "framer-motion"; // Added for animations
+import { Mail, MapPin, Phone } from "lucide-react"; // Removed Linkedin, Instagram, Facebook, Added Phone
 import contactBg from "@/assets/images/contact/contact_bg.jpg";
+import SocialLinks from "../ui/SocialLinks"; // Import the new component
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.3,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 12,
+    },
+  },
+};
 
 const Footer: React.FC = () => {
   const quickLinks = [
@@ -11,24 +37,27 @@ const Footer: React.FC = () => {
     { name: "Contact", href: "/contact" },
   ];
 
-  const socialLinks = [
-    { name: "LinkedIn", href: "#", icon: Linkedin },
-    { name: "GitHub", href: "#", icon: Github },
-    { name: "Instagram", href: "#", icon: Instagram },
-  ];
+  // Removed the old socialLinks array
 
   return (
     <footer
-      className="bg-cover bg-center text-gray-300 py-40 relative border-t border-gray-600"
+      className="bg-cover bg-center text-gray-300 py-20 md:py-40 relative border-t border-gray-600"
       style={{ backgroundImage: `url(${contactBg})` }}>
       <div className="absolute inset-0 bg-[var(--launchpad-navy-overlay)] z-0"></div>
       {/* Added py-40 */}
       <div className="container mx-auto px-6 relative z-10">
         {" "}
         {/* Removed py-12, added relative z-10 */}
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <motion.div
+          className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}>
           {/* 1. Left Side: Logo + Short Tagline */}
-          <div className="col-span-1 md:col-span-2 lg:col-span-1">
+          <motion.div
+            className="col-span-1 md:col-span-2 lg:col-span-1"
+            variants={itemVariants}>
             <a href="/" className="flex items-center space-x-2 mb-4">
               <img
                 src="/src/assets/images/rocket.svg"
@@ -43,10 +72,10 @@ const Footer: React.FC = () => {
             <p className="text-sm font-[var(--launchpad-poppins-font)]">
               Modern websites. Scalable solutions. Built with care.
             </p>
-          </div>
+          </motion.div>
 
           {/* 2. Quick Links (Navigation) */}
-          <div>
+          <motion.div variants={itemVariants}>
             <h5 className="mb-4 font-semibold text-launchpad-white uppercase font-[var(--launchpad-poppins-font)]">
               Quick Links
             </h5>
@@ -61,10 +90,10 @@ const Footer: React.FC = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
           {/* 3. Contact Info */}
-          <div>
+          <motion.div variants={itemVariants}>
             <h5 className="mb-4 font-semibold text-launchpad-white uppercase font-[var(--launchpad-poppins-font)]">
               Contact Us
             </h5>
@@ -75,9 +104,9 @@ const Footer: React.FC = () => {
                   className="mr-2 mt-1 flex-shrink-0 text-launchpad-blue"
                 />
                 <a
-                  href="mailto:hello@launchpadwebsolutions.com"
+                  href="mailto:info@launchpadwebsolutions.com"
                   className="hover:text-launchpad-blue transition-colors duration-200 font-[var(--launchpad-poppins-font)]">
-                  hello@launchpadwebsolutions.com
+                  info@launchpadwebsolutions.com
                 </a>
               </li>
               <li className="flex items-start">
@@ -89,31 +118,35 @@ const Footer: React.FC = () => {
                   Based in Australia — working worldwide
                 </span>
               </li>
+              <li className="flex items-start">
+                <Phone
+                  size={18}
+                  className="mr-2 mt-1 flex-shrink-0 text-launchpad-blue"
+                />
+                <a
+                  href="tel:+61408202237"
+                  className="hover:text-launchpad-blue transition-colors duration-200 font-[var(--launchpad-poppins-font)]">
+                  +61 408 202 237
+                </a>
+              </li>
             </ul>
-          </div>
+          </motion.div>
 
           {/* 4. Social Media Icons */}
-          <div>
+          <motion.div variants={itemVariants}>
             <h5 className="mb-4 font-semibold text-launchpad-white uppercase font-[var(--launchpad-poppins-font)]">
               Connect
             </h5>
-            <div className="flex space-x-4">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.name}
-                  href={social.href}
-                  aria-label={social.name}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-launchpad-blue transition-colors duration-200">
-                  <social.icon className="h-5 w-5" />
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
+            <SocialLinks iconClassName="text-gray-300 hover:text-launchpad-blue" />
+          </motion.div>
+        </motion.div>
         {/* 5. Bottom Bar (Legal + Credit) */}
-        <div className="mt-12 border-t border-launchpad-gray/30 pt-8 text-center text-sm">
+        <motion.div
+          className="mt-12 border-t border-launchpad-gray/30 pt-8 text-center text-sm"
+          variants={itemVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}>
           <p className="mb-1 font-[var(--launchpad-poppins-font)]">
             © {new Date().getFullYear()} Launchpad Web Solutions. All rights
             reserved.
@@ -121,7 +154,8 @@ const Footer: React.FC = () => {
           <p className="font-[var(--launchpad-poppins-font)]">
             Website handcrafted with React & Tailwind CSS.
           </p>
-        </div>
+        </motion.div>{" "}
+        {/* Corrected closing tag for the bottom bar motion.div */}
       </div>
     </footer>
   );

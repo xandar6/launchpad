@@ -42,15 +42,15 @@ const Intro: React.FC = () => {
   return (
     <section
       style={{
-        backgroundImage: `url("/src/assets/images/intro/intro_bg_1.webp")`,
+        backgroundImage: `url("/src/assets/images/intro/intro_bg_2.webp")`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
-      className="-mt-[56px] flex-grow flex flex-col justify-center pb-16 sm:pb-24 pt-[119px] sm:pt-[151px] text-white relative z-0">
+      className="mt-0 lg:-mt-[56px] flex-grow flex flex-col justify-center pb-0 sm:pb-24 pt-0 sm:pt-[151px] text-white relative z-0">
       {/* MouseIcon remains unchanged as per current scope */}
       <motion.div
-        className="absolute left-1/2 -translate-x-1/2 top-5 sm:top-5 z-20"
+        className="absolute left-1/2 -translate-x-1/2 top-5 sm:top-5 z-20 hidden lg:block"
         style={{
           width: "24px",
           height: "36px",
@@ -63,10 +63,12 @@ const Intro: React.FC = () => {
 
       <div className="container mx-auto px-4">
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 justify-items-center gap-8 py-12" // Increased gap, adjusted grid for more items
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 justify-items-center gap-4 sm:gap-8 py-12" // Increased gap, adjusted grid for more items
           variants={containerVariants}
           initial="hidden"
-          animate="visible">
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }} // Trigger animation when 20% of the element is in view, only once
+        >
           {valueCardsData.map((cardItem, index) => {
             return (
               <motion.div
@@ -74,15 +76,15 @@ const Intro: React.FC = () => {
                 variants={itemVariants}
                 whileHover={{ scale: 1.05, y: -5 }}
                 transition={{ type: "spring", stiffness: 300, damping: 10 }}
-                className="w-full max-w-[200px] min-h-[220px] flex flex-col justify-center items-center cursor-pointer p-4">
+                className="w-full sm:max-w-[200px] min-h-0 sm:min-h-[220px] flex flex-row items-center sm:flex-col sm:justify-center sm:items-center cursor-pointer p-4">
                 {/* Sizing is maintained on this outer motion.div, added justify-center, items-center and p-4 here */}
                 {/* Card Content - Card visual wrapper removed */}
                 <img
                   src={cardItem.icon}
                   alt={cardItem.label}
-                  className="w-40 h-40 mb-4" /* Increased size and margin slightly */
+                  className="w-20 h-20 mr-4 sm:w-40 sm:h-40 sm:mb-4 sm:mr-0" /* Increased size and margin slightly */
                 />
-                <h3 className="text-lg text-center font-medium text-launchpad-navy">
+                <h3 className="flex flex-1 items-center text-lg text-left sm:block sm:text-center font-medium text-launchpad-navy">
                   {" "}
                   {/* Increased font size and weight slightly */}
                   {cardItem.label}
