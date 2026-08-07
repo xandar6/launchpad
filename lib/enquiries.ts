@@ -58,8 +58,13 @@ async function getZohoAccessToken(config: ZohoMailConfig) {
   );
 
   if (!tokenResponse.ok) {
+    const responseText = await tokenResponse.text();
+  
     throw new Error(
-      `Unable to refresh Zoho access token (${tokenResponse.status})`,
+      `Zoho token refresh failed (${tokenResponse.status}): ${responseText.slice(
+        0,
+        500,
+      )}`,
     );
   }
 
@@ -209,7 +214,10 @@ export async function saveEnquiry(
       try {
         await sendEnquiryNotification(enquiry, zoho);
       } catch (error) {
-        console.error("Unable to send Zoho enquiry notification", error);
+        const message =
+          error instanceof Error ? error.message : String(error);
+    
+        console.error(`ZOHO ERROR: ${message}`);
       }
     }
 
