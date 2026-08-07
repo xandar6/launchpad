@@ -1,0 +1,3 @@
+import type { MetadataRoute } from "next";
+import { headers } from "next/headers";
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> { const h = await headers(); const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000"; const proto = h.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https"); const base = `${proto}://${host}`; return ["", "/services", "/industries", "/packages", "/process", "/portfolio", "/about", "/quote"].map(path => ({ url: `${base}${path}`, changeFrequency: path === "" ? "weekly" : "monthly", priority: path === "" ? 1 : path === "/quote" ? .9 : .8 })); }
