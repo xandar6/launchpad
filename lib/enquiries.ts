@@ -68,13 +68,16 @@ async function getZohoAccessToken(config: ZohoMailConfig) {
     );
   }
 
-  const tokenData = (await tokenResponse.json()) as {
+ const tokenData = (await tokenResponse.json()) as {
     access_token?: string;
     expires_in?: number;
+    error?: string;
   };
-
+  
   if (!tokenData.access_token) {
-    throw new Error("Zoho did not return an access token");
+    throw new Error(
+      `Zoho token error: ${tokenData.error ?? "unknown_error"}`,
+    );
   }
 
   const expiresIn = tokenData.expires_in ?? 3600;
