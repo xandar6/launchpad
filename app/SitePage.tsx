@@ -128,16 +128,28 @@ function About() {
 }
 
 function Quote() {
-  const [sent, setSent] = useState(false);
-  function submit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault(); const fd = new FormData(e.currentTarget);
-    const subject = encodeURIComponent(`Website enquiry from ${fd.get("name") || "a potential client"}`);
-    const body = encodeURIComponent(`Name: ${fd.get("name")}\nBusiness: ${fd.get("business")}\nEmail: ${fd.get("email")}\nPhone: ${fd.get("phone")}\nProject: ${fd.get("project")}\nBudget: ${fd.get("budget")}\n\nWhat they need:\n${fd.get("message")}`);
-    setSent(true); window.location.href = `mailto:hello@launchpadweb.com.au?subject=${subject}&body=${body}`;
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [error, setError] = useState("");
+  async function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    setStatus("submitting");
+    setError("");
+
+    try {
+      const response = await fetch("/api/enquiries", { method: "POST", body: new FormData(form) });
+      const result = await response.json().catch(() => null) as { message?: string } | null;
+      if (!response.ok) throw new Error(result?.message || "We couldn’t send your enquiry. Please try again.");
+      form.reset();
+      setStatus("success");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "We couldn’t send your enquiry. Please try again.");
+      setStatus("error");
+    }
   }
   return <><PageHero eyebrow="Start a project" title="Tell us where you want to go." text="Share a little about the business, the challenge, and what a successful project would change. We’ll reply with a practical next step."/>
     <section className="quote-layout"><aside><p className="eyebrow">What happens next</p><ol>{[["1","We read every detail","A real person reviews your enquiry."],["2","We arrange a short call","We clarify the goals, timing, fit, and likely path."],["3","You get a clear proposal","Defined scope, investment, timing, and no surprises."]].map(x => <li key={x[0]}><span>{x[0]}</span><div><b>{x[1]}</b><p>{x[2]}</p></div></li>)}</ol><div className="contact-card"><a href="mailto:hello@launchpadweb.com.au">hello@launchpadweb.com.au</a><a href="tel:1300123456">1300 123 456</a><p>Sydney, NSW, Australia</p></div></aside>
-      <form className="quote-form" onSubmit={submit}><div className="field-grid"><label>Full name *<input name="name" required autoComplete="name"/></label><label>Business name *<input name="business" required autoComplete="organization"/></label><label>Email *<input name="email" type="email" required autoComplete="email"/></label><label>Phone<input name="phone" type="tel" autoComplete="tel"/></label><label>Project type *<select name="project" required defaultValue=""><option value="" disabled>Select one</option><option>New business website</option><option>Website redesign</option><option>E-commerce</option><option>Custom web solution</option><option>Not sure yet</option></select></label><label>Indicative budget<select name="budget" defaultValue=""><option value="">Prefer to discuss</option><option>Under $5,000</option><option>$5,000–$10,000</option><option>$10,000–$20,000</option><option>$20,000+</option></select></label></div><label>What would you like this project to achieve? *<textarea name="message" rows={6} required placeholder="A little context goes a long way…"/></label><button className="button submit-button" type="submit">Prepare my enquiry <span>↗</span></button><p className="form-note">This opens a pre-filled message in your email app. Your details are not stored on this website.</p>{sent && <p className="success" role="status">Your email app should be opening now. If it doesn’t, email us directly.</p>}</form>
+      <form className="quote-form" onSubmit={submit}><div className="field-grid"><label>Full name *<input name="name" required maxLength={120} autoComplete="name"/></label><label>Business name *<input name="business" required maxLength={160} autoComplete="organization"/></label><label>Email *<input name="email" type="email" required maxLength={254} autoComplete="email"/></label><label>Phone<input name="phone" type="tel" maxLength={50} autoComplete="tel"/></label><label>Project type *<select name="project" required defaultValue=""><option value="" disabled>Select one</option><option>New business website</option><option>Website redesign</option><option>E-commerce</option><option>Custom web solution</option><option>Not sure yet</option></select></label><label>Indicative budget<select name="budget" defaultValue=""><option value="">Prefer to discuss</option><option>Under $5,000</option><option>$5,000–$10,000</option><option>$10,000–$20,000</option><option>$20,000+</option></select></label></div><label>What would you like this project to achieve? *<textarea name="message" rows={6} required maxLength={5000} placeholder="A little context goes a long way…"/></label><label className="form-trap" aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off"/></label><button className="button submit-button" type="submit" disabled={status === "submitting"}>{status === "submitting" ? "Sending enquiry…" : "Send my enquiry"} <span>↗</span></button><p className="form-note">Your details are sent securely to Launchpad. We’ll use them only to respond to your enquiry.</p><div className="form-status" aria-live="polite">{status === "success" && <p className="success" role="status">Thanks — your enquiry has been sent. We’ll be in touch with a practical next step.</p>}{status === "error" && <p className="error" role="alert">{error}</p>}</div></form>
     </section></>;
 }
 
