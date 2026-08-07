@@ -1,7 +1,14 @@
 "use client";
 
-import Link from "next/link";
-import { FormEvent, useState } from "react";
+import {
+  FormEvent,
+  useState,
+  type ComponentPropsWithoutRef,
+} from "react";
+
+function Link(props: ComponentPropsWithoutRef<"a">) {
+  return <a {...props} />;
+}
 
 export type PageKey = "home" | "services" | "industries" | "packages" | "process" | "portfolio" | "about" | "quote";
 
