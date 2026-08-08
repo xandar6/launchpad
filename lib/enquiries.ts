@@ -190,7 +190,7 @@ const content = `
 
     <div style="margin-top: 28px;">
       <a
-        href="${replyUrl}"
+        href="${escapeHtml(replyUrl)}"
         style="
           display: inline-block;
           padding: 12px 20px;
