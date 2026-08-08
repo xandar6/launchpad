@@ -33,6 +33,20 @@ function value(body: FormData, key: string, maxLength: number) {
   return typeof entry === "string" ? entry.trim().slice(0, maxLength) : "";
 }
 
+function escapeHtml(value: string) {
+  return value.replace(
+    /[&<>"']/g,
+    (character) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;",
+      })[character] ?? character,
+  );
+}
+
 async function getZohoAccessToken(config: ZohoMailConfig) {
   if (
     cachedAccessToken &&
@@ -106,21 +120,102 @@ async function sendEnquiryNotification(
 
   const subjectName = enquiry.name.replace(/[\r\n]+/g, " ");
 
-  const content = [
-    "New website enquiry",
-    "",
-    `Name: ${enquiry.name}`,
-    `Business: ${enquiry.business}`,
-    `Email: ${enquiry.email}`,
-    `Phone: ${enquiry.phone || "Not provided"}`,
-    `Project: ${enquiry.project}`,
-    `Budget: ${enquiry.budget || "Not provided"}`,
-    "",
-    "Message:",
-    enquiry.message,
-    "",
-    "This enquiry was submitted through launchpadwebsolutions.com.",
-  ].join("\n");
+const replySubject = encodeURIComponent(
+  `Re: Website enquiry — ${subjectName}`,
+);
+
+const replyUrl = `mailto:${enquiry.email}?subject=${replySubject}`;
+
+const content = `
+  <div style="font-family: Arial, sans-serif; max-width: 620px; color: #122139;">
+    <h2 style="margin-bottom: 24px;">
+      New website enquiry
+    </h2>
+
+    <table
+      cellpadding="0"
+      cellspacing="0"
+      style="width: 100%; line-height: 1.7;"
+    >
+      <tr>
+        <td><strong>Name:</strong></td>
+        <td>${escapeHtml(enquiry.name)}</td>
+      </tr>
+
+      <tr>
+        <td><strong>Business:</strong></td>
+        <td>${escapeHtml(enquiry.business)}</td>
+      </tr>
+
+      <tr>
+        <td><strong>Email:</strong></td>
+        <td>
+          <a href="mailto:${escapeHtml(enquiry.email)}">
+            ${escapeHtml(enquiry.email)}
+          </a>
+        </td>
+      </tr>
+
+      <tr>
+        <td><strong>Phone:</strong></td>
+        <td>${escapeHtml(enquiry.phone || "Not provided")}</td>
+      </tr>
+
+      <tr>
+        <td><strong>Project:</strong></td>
+        <td>${escapeHtml(enquiry.project)}</td>
+      </tr>
+
+      <tr>
+        <td><strong>Budget:</strong></td>
+        <td>${escapeHtml(enquiry.budget || "Not provided")}</td>
+      </tr>
+    </table>
+
+    <div style="margin-top: 24px;">
+      <strong>Message:</strong>
+
+      <div
+        style="
+          margin-top: 8px;
+          padding: 16px;
+          background: #f5f5f5;
+          border-radius: 6px;
+          line-height: 1.6;
+        "
+      >
+        ${escapeHtml(enquiry.message).replace(/\n/g, "<br>")}
+      </div>
+    </div>
+
+    <div style="margin-top: 28px;">
+      <a
+        href="${replyUrl}"
+        style="
+          display: inline-block;
+          padding: 12px 20px;
+          background: #ef6531;
+          color: #ffffff;
+          text-decoration: none;
+          border-radius: 6px;
+          font-weight: bold;
+        "
+      >
+        Reply to customer
+      </a>
+    </div>
+
+    <p
+      style="
+        margin-top: 28px;
+        font-size: 13px;
+        color: #666666;
+      "
+    >
+      This enquiry was submitted through launchpadwebsolutions.com.
+    </p>
+  </div>
+`;
 
   const mailResponse = await fetch(
     `https://mail.zoho.com.au/api/accounts/${encodeURIComponent(
@@ -138,7 +233,7 @@ async function sendEnquiryNotification(
         toAddress: config.toAddress,
         subject: `New website enquiry — ${subjectName}`,
         content,
-        mailFormat: "plaintext",
+        mailFormat: "html",
       }),
     },
   );
